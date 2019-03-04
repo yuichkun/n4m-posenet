@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 0,
-			"revision" : 0,
+			"revision" : 3,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -47,7 +47,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 751.0, 423.0, 266.0, 25.0 ],
-					"presentation_linecount" : 2,
 					"text" : "3. Do whatever you want to do with it!"
 				}
 
@@ -100,7 +99,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 0,
-							"revision" : 0,
+							"revision" : 3,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -268,7 +267,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 693.0, 88.5, 187.0, 54.0 ],
+					"patching_rect" : [ 693.0, 88.5, 190.0, 54.0 ],
 					"text" : "1. Install dependencies from npm. Wait until the box below says 'completed'."
 				}
 
@@ -280,8 +279,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 767.90478515625, 299.5, 146.0, 22.0 ],
-					"text" : "completed"
+					"patching_rect" : [ 767.90478515625, 299.5, 146.0, 22.0 ]
 				}
 
 			}
@@ -297,7 +295,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 0,
-							"revision" : 0,
+							"revision" : 3,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -571,7 +569,14 @@
 
 			}
  ],
-		"dependency_cache" : [  ],
+		"dependency_cache" : [ 			{
+				"name" : "index.js",
+				"bootpath" : "~/Desktop/n4m-posenet",
+				"patcherrelativepath" : ".",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+ ],
 		"autosave" : 0
 	}
 
