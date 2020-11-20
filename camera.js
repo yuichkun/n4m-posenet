@@ -15,7 +15,7 @@
  * =============================================================================
  */
 const SocketIOClient = require("socket.io-client");
-const io = new SocketIOClient("http://localhost:3000");
+const io = new SocketIOClient("http://localhost:4512");
 const socket = io.connect();
 socket.on("connect", () => {
 	console.log("Connected to Max 8");
