@@ -71,8 +71,8 @@ async function changeVideoSource(newDevice) {
 		"audio": false,
 		"video": {
 			facingMode: "user",
-			width: videoWidth,
-			height: videoHeight,
+			width: { min: videoWidth },
+			height: { min: videoHeight },
 			deviceId: newDevice
 		}
 	});
