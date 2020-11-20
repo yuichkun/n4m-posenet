@@ -25,8 +25,8 @@ const dat = require("dat.gui");
 const Stats = require("stats.js");
 const { drawBoundingBox, drawKeypoints, drawSkeleton } = require("./demo_util");
 
-const videoWidth = 600;
-const videoHeight = 500;
+let videoWidth = 600;
+let videoHeight = 500;
 const stats = new Stats();
 
 function sendToMaxPatch(poses) {
@@ -95,6 +95,7 @@ async function listVideoDevices() {
 const guiState = {
 	algorithm: "single-pose",
 	devices: {
+		ratio: 1,
 		videoDevices: []
 	},
 	input: {
@@ -139,8 +140,10 @@ async function setupGui(cameras, net) {
 			gui.add(guiState, "algorithm", ["single-pose", "multi-pose"]);
 
 	let devices = gui.addFolder("Devices");
+	devices.add(guiState.devices, 'ratio', 1, 10).onFinishChange(resizeCanvas);
 	const videoDevices = await listVideoDevices();
 	const videoDeviceController = devices.add(guiState.devices, "videoDevices", videoDevices);
+	devices.open();
 
 	videoDeviceController.onChange(async function (selectedDevice) {
 		const allDevices = await navigator.mediaDevices.enumerateDevices();
@@ -223,6 +226,13 @@ function setupFPS() {
 	document.body.appendChild(stats.dom);
 }
 
+function resizeCanvas() {
+	const canvas = document.getElementById("output");
+	const { ratio } = guiState.devices;
+	canvas.width = videoWidth * ratio;
+	canvas.height = videoHeight * ratio;
+}
+
 /**
  * Feeds an image to posenet to estimate poses - this is where the magic
  * happens. This function loops with a requestAnimationFrame method.
@@ -233,10 +243,10 @@ function detectPoseInRealTime(video, net) {
 	// since images are being fed from a webcam
 	const flipHorizontal = true;
 
-	canvas.width = videoWidth;
-	canvas.height = videoHeight;
+	resizeCanvas();
 
 	async function poseDetectionFrame() {
+		const { ratio } = guiState.devices;
 		if (guiState.changeToArchitecture) {
 			// Important to purge variables and free up GPU memory
 			guiState.net.dispose();
@@ -283,13 +293,13 @@ function detectPoseInRealTime(video, net) {
 				break;
 		}
 
-		ctx.clearRect(0, 0, videoWidth, videoHeight);
+		ctx.clearRect(0, 0, videoWidth * ratio, videoHeight * ratio);
 
 		if (guiState.output.showVideo) {
 			ctx.save();
 			ctx.scale(-1, 1);
-			ctx.translate(-videoWidth, 0);
-			ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+			ctx.translate(-videoWidth * ratio, 0);
+			ctx.drawImage(video, 0, 0, videoWidth * ratio, videoHeight * ratio);
 			ctx.restore();
 		}
 
@@ -299,13 +309,13 @@ function detectPoseInRealTime(video, net) {
 		poses.forEach(({score, keypoints}) => {
 			if (score >= minPoseConfidence) {
 				if (guiState.output.showPoints) {
-					drawKeypoints(keypoints, minPartConfidence, ctx);
+					drawKeypoints(keypoints, minPartConfidence, ctx, ratio);
 				}
 				if (guiState.output.showSkeleton) {
-					drawSkeleton(keypoints, minPartConfidence, ctx);
+					drawSkeleton(keypoints, minPartConfidence, ctx, ratio);
 				}
 				if (guiState.output.showBoundingBox) {
-					drawBoundingBox(keypoints, ctx);
+					drawBoundingBox(keypoints, ctx, ratio);
 				}
 			}
 		});
