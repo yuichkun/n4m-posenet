@@ -29,18 +29,6 @@ const videoWidth = 600;
 const videoHeight = 500;
 const stats = new Stats();
 
-function isAndroid() {
-	return /Android/i.test(navigator.userAgent);
-}
-
-function isiOS() {
-	return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-function isMobile() {
-	return isAndroid() || isiOS();
-}
-
 function sendToMaxPatch(poses) {
 	socket.emit("dispatch", poses);
 }
@@ -59,13 +47,12 @@ async function setupCamera() {
 	video.width = videoWidth;
 	video.height = videoHeight;
 
-	const mobile = isMobile();
 	const stream = await navigator.mediaDevices.getUserMedia({
 		"audio": false,
 		"video": {
 			facingMode: "user",
-			width: mobile ? undefined : videoWidth,
-			height: mobile ? undefined : videoHeight
+			width: videoWidth,
+			height: videoHeight
 		}
 	});
 	video.srcObject = stream;
@@ -80,13 +67,12 @@ async function setupCamera() {
 async function changeVideoSource(newDevice) {
 	const video = document.getElementById("video");
 	video.srcObject = null;
-	const mobile = isMobile();
 	const stream = await navigator.mediaDevices.getUserMedia({
 		"audio": false,
 		"video": {
 			facingMode: "user",
-			width: mobile ? undefined : videoWidth,
-			height: mobile ? undefined : videoHeight,
+			width: videoWidth,
+			height: videoHeight,
 			deviceId: newDevice
 		}
 	});
@@ -112,7 +98,7 @@ const guiState = {
 		videoDevices: []
 	},
 	input: {
-		mobileNetArchitecture: isMobile() ? "0.50" : "0.75",
+		mobileNetArchitecture: "0.75",
 		outputStride: 16,
 		imageScaleFactor: 0.5
 	},
