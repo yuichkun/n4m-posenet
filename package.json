@@ -11,7 +11,7 @@
   "dependencies": {
     "@tensorflow-models/posenet": "0.2.2",
     "@tensorflow/tfjs": "0.13.0",
-    "socket.io": "2.1.1",
+    "socket.io": "2.4.0",
     "socket.io-client": "2.1.1",
     "stats.js": "0.17.0"
   },
